@@ -8,9 +8,14 @@ export const HOMES = [1, 2, 3, 4, 6, 8].map((n) => ({
   account: `cl-${n}`,
   repo: `Site__Agent__Maestro__Claude__${n}`,
   url: `https://raw.githubusercontent.com/SovereignWebsite/Site__Agent__Maestro__Claude__${n}/dev/site/heartbeat.json`,
-  // While false, a home with no heartbeat file yet is grey ("no heartbeat yet"), not red. Set true once its maestro beats.
-  required: false,
+  // While false, a home with no heartbeat file yet is grey ("no heartbeat yet"), not red. True once its maestro beats.
+  required: n === 1, // cl-1 beats since 25 Nov 18:04Z (e9c12b5)
 }));
+
+// Only an https link may come from a beat, so a heartbeat cannot plant a javascript: or other URL on the page.
+export function safeLink(u) {
+  try { const x = new URL(u); return x.protocol === 'https:' ? x.href : null; } catch { return null; }
+}
 export const MISSING = Symbol('missing');
 
 const MIN = 60 * 1000, HOUR = 60 * MIN;
@@ -134,7 +139,8 @@ export function render(container, rows, now = new Date()) {
   const body = rows.map((r) => {
     const b = r.beat || {};
     const dot = el('span', { style: `display:inline-block;width:.8em;height:.8em;border-radius:50%;background:${COLOURS[r.colour]};margin-right:.4em;vertical-align:-.05em` });
-    const asks = b.asks?.count ? (b.asks.link ? el('a', { href: b.asks.link }, String(b.asks.count)) : String(b.asks.count)) : '0';
+    const link = safeLink(b.asks?.link);
+    const asks = b.asks?.count ? (link ? el('a', { href: link }, String(b.asks.count)) : String(b.asks.count)) : '0';
     const room = b.room ? `${b.room.status ?? 'unknown'}${b.room.used_pct != null ? ` (${b.room.used_pct}%)` : ''}${b.room.overage ? ', overage' : ''}` : 'unknown';
     return el('tr', { 'data-colour': r.colour },
       el('td', {}, el('a', { href: `https://github.com/SovereignWebsite/${r.repo}/blob/dev/site/heartbeat.json` }, r.account)),

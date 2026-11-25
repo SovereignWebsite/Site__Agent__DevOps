@@ -46,7 +46,7 @@
     {
       "n": 5,
       "what": "Accounts heartbeat: format, rule, check, view, alerts (a.maestro relay at Dinis's word, 25 Nov)",
-      "state": "draft 2 with code (heartbeat/heartbeat.mjs, tests pass); view sent to a.maestro for /accounts/ 18:20Z; homes not yet beating (grey)",
+      "state": "live on /accounts/ (Site__Agent__Maestro 1158987); cl-1 beating and required; asks links https only; business hours pending Dinis (maybe 09:00 to 17:00)",
       "page": "findings/2026-11-25__accounts-heartbeat.html"
     }
   ],
@@ -57,6 +57,6 @@
       "since": "2026-11-25T12:30Z"
     }
   ],
-  "updated": "2026-11-25T18:20Z",
+  "updated": "2026-11-25T18:10Z",
   "Dinis:": []
 }

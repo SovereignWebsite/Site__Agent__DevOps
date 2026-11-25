@@ -1,6 +1,6 @@
 // Tests for heartbeat.mjs: node heartbeat/test.mjs (from this folder's parent). No dependencies.
 import assert from 'node:assert/strict';
-import { interval, judge, dinisLines, MISSING } from './heartbeat.mjs';
+import { interval, judge, dinisLines, MISSING, safeLink, HOMES } from './heartbeat.mjs';
 
 const H = 3600e3, M = 60e3;
 const beat = (o) => ({ v: 1, account: 'cl-1', agent: 'x', state: 'working', room: { status: 'allowed', resets_at: '2026-11-28T09:00Z' }, work: { working: 2, blocked: 0 }, asks: { count: 0, link: null }, ...o });
@@ -38,4 +38,11 @@ assert.equal(judge(beat({ at, room: { status: 'allowed', resets_at: '2026-11-20T
 // Alerts: only red rows.
 const rows = [{ account: 'cl-1', colour: 'red', reasons: ['stopped'], beat: { at } }, { account: 'cl-2', colour: 'amber', reasons: ['x'], beat: {} }];
 assert.deepEqual(dinisLines(rows, t(0)).map((l) => l.account), ['cl-1']);
+// Links from a beat: https only.
+assert.equal(safeLink('javascript:alert(1)'), null);
+assert.equal(safeLink('data:text/html,x'), null);
+assert.equal(safeLink('http://example.org/'), null);
+assert.equal(safeLink('not a url'), null);
+assert.equal(safeLink('https://example.org/asks'), 'https://example.org/asks');
+assert.deepEqual(HOMES.filter((h) => h.required).map((h) => h.account), ['cl-1']);
 console.log('heartbeat: all tests passed');
