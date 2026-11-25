@@ -13,9 +13,26 @@
     "total": 79,
     "first": "2026-11-20T10:54:58Z",
     "last_in_ct_index": "2026-11-24T23:42:26Z",
-    "not_yet_indexed": ["puter.platform.sovereignweb.site, served since 2026-11-25T02:03:29Z"],
-    "by_day": { "2026-11-20": 28, "2026-11-21": 2, "2026-11-22": 25, "2026-11-23": 11, "2026-11-24": 13 },
-    "by_group": { "agents": 30, "platform": 9, "tool": 8, "top level": 5, "startups": 5, "demo": 3, "two-level groups (google.tool, huggingface.tool, agentics-foundation.organisation)": 3, "people and organisations (artist, designer, founder, manager, author, talent, invest, organisation, company, presentations, provider, frameworks)": 16 },
+    "not_yet_indexed": [
+      "puter.platform.sovereignweb.site, served since 2026-11-25T02:03:29Z"
+    ],
+    "by_day": {
+      "2026-11-20": 28,
+      "2026-11-21": 2,
+      "2026-11-22": 25,
+      "2026-11-23": 11,
+      "2026-11-24": 13
+    },
+    "by_group": {
+      "agents": 30,
+      "platform": 9,
+      "tool": 8,
+      "top level": 5,
+      "startups": 5,
+      "demo": 3,
+      "two-level groups (google.tool, huggingface.tool, agentics-foundation.organisation)": 3,
+      "people and organisations (artist, designer, founder, manager, author, talent, invest, organisation, company, presentations, provider, frameworks)": 16
+    },
     "names_per_certificate": 1,
     "renewals_or_duplicates": 0
   },
@@ -25,7 +42,12 @@
     "lowest": "3.3 left after 2026-11-24T23:42:26Z",
     "at_measurement": "about 4.3 at 03:00Z on 25 Nov, before puter.platform's certificate (so about 3.3 after it)",
     "sustained_rate": "about 7 new names a day; peak demand was 28 (20 Nov) and 25 (22 Nov)",
-    "other_registered_domains": { "sovereignwebsite.site": 7, "sovereignwebsite.ai": 1, "sovereignwebsite.org": 1 }
+    "other_registered_domains": {
+      "sovereignwebsite.site": 7,
+      "sovereignwebsite.ai": 1,
+      "sovereignwebsite.org": 1
+    },
+    "model_caveat": "The model says about 4 left at 03:00Z, but only one of two new sites got a certificate, so the real bucket is lower than modelled."
   },
   "stuck_sites": {
     "dns": "every one is a CNAME to sovereignwebsite.github.io; no CAA record on sovereignweb.site",
@@ -40,8 +62,10 @@
       "mail.agents.sovereignweb.site (also stuck)",
       "nvidia.platform.sovereignweb.site (also stuck)"
     ],
-    "counter_evidence": "puter.platform, set up after uk-driving-test, got its certificate at 02:03Z; github.tool and startup-grants.tool got theirs at 23:42Z and 23:17Z. A domain-wide limit would not let later names through while earlier ones wait.",
+    "counter_evidence": "Withdrawn: see correction.",
     "open_question": "the Pages cert_state of each stuck site (Org apply sees it; Actions logs are not readable from this session). Asked a.factory at 03:05Z."
   },
-  "verdict": "Not confirmed as the cause of the five, and not ruled out as a hazard: the domain is running at the edge of its bucket (about 3 left) and any burst of more than about 3 new names will be refused until it refills."
+  "verdict": "Likely: the stuck sites asked while the bucket was empty and GitHub does not retry by itself. Not proven by an error message. The 06:17Z sweep nudges every missing certificate at once; at most one will succeed.",
+  "updated": "2026-11-25T03:20Z",
+  "correction": "From a.factory, 03:07Z: Let's Encrypt backdates notBefore by about an hour, so puter.platform's certificate was issued at about 03:03Z, minutes after its site was created from IaC 0ce9bb5; nvidia.platform, created in the same push, got none. Stuck sites asked while the bucket was empty: uk-driving-test re-saved 00:35Z (cert_state new, run 45519256678), apple about 00:40Z, calendar about 00:52Z, the book about 01:45Z; scoped runs 45522692169 and 45529178989 planned no nudge, so no error state."
 }

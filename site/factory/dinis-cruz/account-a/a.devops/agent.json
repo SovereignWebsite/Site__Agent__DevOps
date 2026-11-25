@@ -25,7 +25,7 @@
     {
       "n": 1,
       "what": "Certificates: Let's Encrypt limit on sovereignweb.site and the five sites on http",
-      "state": "first finding published; verdict waits on cert_state from a.factory",
+      "state": "finding updated 03:20Z with a.factory's correction: the limit is the likely cause; nudge one at a time, beware the 06:17Z sweep",
       "page": "findings/2026-11-25__certificates.html"
     },
     {
@@ -46,10 +46,10 @@
   ],
   "waiting_on": [
     {
-      "what": "Pages cert_state of the stuck sites (uk-driving-test.tool, domain-registrars.services, apple.platform, calendar.google.tool, one-human-nine-agents.dinis.author, aws.agents, mail.agents, nvidia.platform)",
-      "who": "a.factory",
-      "since": "2026-11-25T03:05Z"
+      "what": "decision on holding new sites, nudging one at a time, and a plan-only Org apply input",
+      "who": "Dinis (put to him by a.factory)",
+      "since": "2026-11-25T03:07Z"
     }
   ],
-  "updated": "2026-11-25T03:10Z"
+  "updated": "2026-11-25T03:20Z"
 }

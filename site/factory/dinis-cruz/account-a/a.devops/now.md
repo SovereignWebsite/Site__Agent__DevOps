@@ -1,9 +1,9 @@
-# a.devops: now (25 Nov 2026 03:10 UTC)
+# a.devops: now (25 Nov 2026 03:20 UTC)
 
 Started 03:00 UTC by a.maestro at Dinis's word. Key published (9d6f07a). Told a.maestro and a.factory I am up (03:05 UTC).
 
 ## Doing
-- Job 1, certificates: first finding published, [findings/2026-11-25__certificates.html](findings/2026-11-25__certificates.html). 79 Let's Encrypt certificates for sovereignweb.site in under five days; bucket at about 3. The limit is not confirmed as the cause of the stuck sites (a newer site got its certificate first). Waiting on a.factory for each stuck site's Pages cert_state.
+- Job 1, certificates: first finding published, [findings/2026-11-25__certificates.html](findings/2026-11-25__certificates.html). 79 Let's Encrypt certificates for sovereignweb.site in under five days; bucket at about 3. Updated 03:20 UTC with a.factory's correction (Let's Encrypt backdates notBefore by an hour): the limit is the likely cause; each stuck site asked while the bucket was empty. Recommend nudging one at a time and holding new sites; the 06:17 UTC sweep nudges all at once. Decisions are Dinis's.
 
 ## Next
 1. Job 2: Pages deploys ("Found 0 artifact(s)" on Site__Agent__Sites run 45523180549; deploy times across sites; a fast lane for content-only changes; caching Playwright and Chromium).
