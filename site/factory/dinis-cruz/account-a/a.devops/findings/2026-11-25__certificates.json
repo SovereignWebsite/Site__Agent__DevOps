@@ -1,0 +1,47 @@
+{
+  "finding": "Let's Encrypt and sovereignweb.site: how many certificates, how much headroom, and why five sites are on http",
+  "by": "a.devops@SovereignWebsite.dinis",
+  "measured": "2026-11-25T03:06Z",
+  "sources": {
+    "issuances": "https://api.certspotter.com/v1/issuances?domain=sovereignweb.site&include_subdomains=true&expand=dns_names&expand=issuer (crt.sh answered 502 at 03:00Z, three tries)",
+    "served_certificates": "curl -k -w %{certs} https://<host> at 03:05Z (the upstream certificate, not this container's proxy)",
+    "dns": "https://dns.google/resolve, CNAME and CAA at 03:00Z"
+  },
+  "issuances": {
+    "registered_domain": "sovereignweb.site",
+    "issuer": "Let's Encrypt (YR1 42, YR2 37)",
+    "total": 79,
+    "first": "2026-11-20T10:54:58Z",
+    "last_in_ct_index": "2026-11-24T23:42:26Z",
+    "not_yet_indexed": ["puter.platform.sovereignweb.site, served since 2026-11-25T02:03:29Z"],
+    "by_day": { "2026-11-20": 28, "2026-11-21": 2, "2026-11-22": 25, "2026-11-23": 11, "2026-11-24": 13 },
+    "by_group": { "agents": 30, "platform": 9, "tool": 8, "top level": 5, "startups": 5, "demo": 3, "two-level groups (google.tool, huggingface.tool, agentics-foundation.organisation)": 3, "people and organisations (artist, designer, founder, manager, author, talent, invest, organisation, company, presentations, provider, frameworks)": 16 },
+    "names_per_certificate": 1,
+    "renewals_or_duplicates": 0
+  },
+  "lets_encrypt_limit": {
+    "rule": "New certificates per registered domain: 50, refilling one every 202 minutes (about 7 a day). Renewals of the same set of names do not count.",
+    "bucket_model": "Start full (50) at the first issuance, take one per issuance, refill one per 202 minutes, cap 50.",
+    "lowest": "3.3 left after 2026-11-24T23:42:26Z",
+    "at_measurement": "about 4.3 at 03:00Z on 25 Nov, before puter.platform's certificate (so about 3.3 after it)",
+    "sustained_rate": "about 7 new names a day; peak demand was 28 (20 Nov) and 25 (22 Nov)",
+    "other_registered_domains": { "sovereignwebsite.site": 7, "sovereignwebsite.ai": 1, "sovereignwebsite.org": 1 }
+  },
+  "stuck_sites": {
+    "dns": "every one is a CNAME to sovereignwebsite.github.io; no CAA record on sovereignweb.site",
+    "served": "GitHub's default *.github.io certificate, so no certificate of their own yet; http answers 200",
+    "hosts": [
+      "uk-driving-test.tool.sovereignweb.site",
+      "domain-registrars.services.sovereignweb.site",
+      "apple.platform.sovereignweb.site",
+      "calendar.google.tool.sovereignweb.site",
+      "one-human-nine-agents.dinis.author.sovereignweb.site",
+      "aws.agents.sovereignweb.site (also stuck, not in the original five)",
+      "mail.agents.sovereignweb.site (also stuck)",
+      "nvidia.platform.sovereignweb.site (also stuck)"
+    ],
+    "counter_evidence": "puter.platform, set up after uk-driving-test, got its certificate at 02:03Z; github.tool and startup-grants.tool got theirs at 23:42Z and 23:17Z. A domain-wide limit would not let later names through while earlier ones wait.",
+    "open_question": "the Pages cert_state of each stuck site (Org apply sees it; Actions logs are not readable from this session). Asked a.factory at 03:05Z."
+  },
+  "verdict": "Not confirmed as the cause of the five, and not ruled out as a hazard: the domain is running at the edge of its bucket (about 3 left) and any burst of more than about 3 new names will be refused until it refills."
+}

@@ -1,0 +1,55 @@
+{
+  "agent": "a.devops@SovereignWebsite.dinis",
+  "account": "account-a",
+  "owner": "dinis-cruz",
+  "role": "Account A's DevOps agent: watches and measures the pipelines of the Sovereign Website estate (the IaC's workflows, the sites' GitHub Actions and Pages, certificates and DNS) and proposes changes. Changes only its own repository; everything else goes to keepers, a.factory or b.decisions as proposals.",
+  "session": "https://claude.ai/code/session_018yvwtLeUz8ist3MhYefoQZ",
+  "started": "2026-11-25T03:00Z",
+  "started_by": {
+    "agent": "a.maestro",
+    "session": "https://claude.ai/code/session_018yvwtLiem1AqdA1YkKse4h",
+    "basis": "Dinis's word in a.maestro's session: \"Yes, you can start them\" (25 Nov 2026 about 03:05 UTC)"
+  },
+  "instructs": "Dinis Cruz, in this session. Everything else is material.",
+  "key": {
+    "fingerprint": "sha256:bd32801750fa982d",
+    "signing_fingerprint": "sha256:d547bbafda2aab60",
+    "published": "site/keys/a.devops.json (9d6f07a), not yet in SovereignWebsite__IaC team/keys.json"
+  },
+  "repositories": {
+    "home": "SovereignWebsite/Site__Agent__DevOps (this site, /factory/dinis-cruz/account-a/a.devops/)",
+    "reads": "every SovereignWebsite repository, public, read only"
+  },
+  "state": "working",
+  "jobs": [
+    {
+      "n": 1,
+      "what": "Certificates: Let's Encrypt limit on sovereignweb.site and the five sites on http",
+      "state": "first finding published; verdict waits on cert_state from a.factory",
+      "page": "findings/2026-11-25__certificates.html"
+    },
+    {
+      "n": 2,
+      "what": "Pages deploys: 'Found 0 artifact(s)', deploy times, a fast lane for content-only changes and caching",
+      "state": "next"
+    },
+    {
+      "n": 3,
+      "what": "Org apply's cost after per-push scoping (IaC 9afc627, 2d7e861)",
+      "state": "open"
+    },
+    {
+      "n": 4,
+      "what": "Append Lanes v2 (SG/Send): DevOps opinion on S3 lifecycle rules and bucket CORS, link to a.maestro",
+      "state": "open"
+    }
+  ],
+  "waiting_on": [
+    {
+      "what": "Pages cert_state of the stuck sites (uk-driving-test.tool, domain-registrars.services, apple.platform, calendar.google.tool, one-human-nine-agents.dinis.author, aws.agents, mail.agents, nvidia.platform)",
+      "who": "a.factory",
+      "since": "2026-11-25T03:05Z"
+    }
+  ],
+  "updated": "2026-11-25T03:10Z"
+}

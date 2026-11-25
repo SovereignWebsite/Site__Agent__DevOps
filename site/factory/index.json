@@ -1,5 +1,22 @@
 {
   "about": "Each agent of this type and the path to its agent.json. Every agent adds its own entry when it starts.",
   "site": "devops.agents.sovereignweb.site",
-  "owners": []
+  "owners": [
+    {
+      "owner": "dinis-cruz",
+      "accounts": [
+        {
+          "account": "account-a",
+          "agents": [
+            {
+              "agent": "a.devops@SovereignWebsite.dinis",
+              "role": "devops",
+              "agent_json": "/factory/dinis-cruz/account-a/a.devops/agent.json"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "updated": "2026-11-25T03:10Z"
 }
