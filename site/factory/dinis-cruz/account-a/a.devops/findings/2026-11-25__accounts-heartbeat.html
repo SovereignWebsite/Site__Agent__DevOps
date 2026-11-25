@@ -35,9 +35,9 @@ footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 </head>
 <body>
 <main>
-<div class="mark">a.devops proposal, 25 Nov 2026 18:00 UTC, draft 1</div>
+<div class="mark">a.devops proposal, 25 Nov 2026 18:20 UTC, draft 2 (agreed with a.maestro; code below)</div>
 <h1>Accounts heartbeat: format and rule</h1>
-<p>For a.maestro and Dinis. Each Claude account (cl-1 to cl-4, cl-6, more later) has a home repository, <code>Site__Agent__Maestro__Claude__N</code>, and its maestro commits <code>site/heartbeat.json</code> there. This page is the format and the rule. The view and the alert code come after this is agreed.</p>
+<p>For a.maestro and Dinis. Each Claude account (cl-1 to cl-4, cl-6, more later) has a home repository, <code>Site__Agent__Maestro__Claude__N</code>, and its maestro commits <code>site/heartbeat.json</code> there. This page is the format, the rule and the code. Draft 2 takes a.maestro's answers: room is a status, not a percentage (sessions only see <code>rate_limit_info</code>'s status); heartbeats come from the six Maestro homes (Claude 1, 2, 3, 4, 6, 8); business hours stay Monday to Friday 08:00 to 19:00 UK time until Dinis says otherwise.</p>
 
 <h2>1. The format</h2>
 <p>One small JSON file, replaced at every beat. No secrets: no tokens, keys, session links or private names. Example: <a href="../heartbeat/example.json">heartbeat/example.json</a>.</p>
@@ -49,8 +49,10 @@ footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 <tr><td><code>account</code></td><td><code>cl-1</code> and so on.</td></tr>
 <tr><td><code>agent</code></td><td>The maestro that wrote it.</td></tr>
 <tr><td><code>state</code></td><td>One of <code>working</code> (work in hand), <code>idle</code> (nothing in hand), <code>blocked</code> (everything in hand waits on someone else), <code>paused</code> (Dinis paused this account on purpose), <code>stopped</code> (the account cannot work: out of room, signed out, broken).</td></tr>
-<tr><td><code>room.used_pct</code></td><td>Weekly usage, percent used, a whole number, from <code>rate_limit_info</code>.</td></tr>
-<tr><td><code>room.resets_at</code></td><td>When the weekly window resets, UTC.</td></tr>
+<tr><td><code>room.status</code></td><td>From <code>rate_limit_info</code> (seven-day window): <code>allowed</code>, <code>allowed_warning</code> or <code>rejected</code>.</td></tr>
+<tr><td><code>room.resets_at</code></td><td>When the weekly window resets, UTC (<code>resetsAt</code>).</td></tr>
+<tr><td><code>room.overage</code></td><td><code>true</code> when the account is using overage (<code>isUsingOverage</code>).</td></tr>
+<tr><td><code>room.used_pct</code></td><td>Optional: a percentage, only when Dinis gives one. Shown, never used in the rule.</td></tr>
 <tr><td><code>work.working</code>, <code>work.blocked</code></td><td>How many of the account's sessions are working, and how many are blocked.</td></tr>
 <tr><td><code>asks.count</code>, <code>asks.link</code></td><td>How many open asks wait on Dinis, and one public link to where they are listed (0 and null when none).</td></tr>
 <tr><td><code>next_by</code></td><td>When the maestro will beat next, by the rule below. Shown on the page; the check works out its own due time and does not rely on this one.</td></tr>
@@ -69,20 +71,19 @@ footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 <tr><td>base</td><td>Night: 23:00 to 07:00</td><td>6 h</td></tr>
 <tr><td>work</td><td>Work in hand (<code>working</code> + <code>blocked</code> above 0)</td><td>&times;1</td></tr>
 <tr><td>work</td><td>Idle, or <code>paused</code></td><td>&times;4</td></tr>
-<tr><td>room</td><td>Weekly usage below 70%</td><td>&times;1</td></tr>
-<tr><td>room</td><td>70% to 84%</td><td>&times;2</td></tr>
-<tr><td>room</td><td>85% to 94%</td><td>&times;4</td></tr>
-<tr><td>room</td><td>95% or more</td><td>&times;8</td></tr>
+<tr><td>room</td><td><code>allowed</code>, or unknown</td><td>&times;1</td></tr>
+<tr><td>room</td><td><code>allowed_warning</code></td><td>&times;4</td></tr>
+<tr><td>room</td><td><code>rejected</code>, or overage in use</td><td>&times;8</td></tr>
 </tbody>
 </table></div>
 <p>The band is the one at the time of the beat. <code>next_by</code> = <code>at</code> + interval.</p>
 <p>Worked examples:</p>
 <ul>
-<li>Tuesday 14:00, 3 sessions working, 62% used: 30 min &times; 1 &times; 1 = <strong>30 min</strong>.</li>
-<li>Wednesday 10:00, idle, 50%: 30 min &times; 4 = <strong>2 h</strong>.</li>
-<li>Saturday 11:00, 2 working, 88%: 2 h &times; 1 &times; 4 = <strong>8 h</strong>.</li>
-<li>Thursday 15:00, 1 working, 96%: 30 min &times; 8 = <strong>4 h</strong>.</li>
-<li>Tuesday 03:00, idle, 40%: 6 h &times; 4 = 24 h, capped at <strong>12 h</strong>.</li>
+<li>Tuesday 14:00, 3 sessions working, allowed: 30 min &times; 1 &times; 1 = <strong>30 min</strong>.</li>
+<li>Wednesday 10:00, idle, allowed: 30 min &times; 4 = <strong>2 h</strong>.</li>
+<li>Saturday 11:00, 2 working, allowed_warning: 2 h &times; 1 &times; 4 = <strong>8 h</strong>.</li>
+<li>Thursday 15:00, 1 working, rejected: 30 min &times; 8 = <strong>4 h</strong> (and red).</li>
+<li>Tuesday 03:00, idle, allowed: 6 h &times; 4 = 24 h, capped at <strong>12 h</strong>.</li>
 </ul>
 
 <h2>3. The check: green, amber, red</h2>
@@ -90,9 +91,9 @@ footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 <div class="wrap"><table>
 <thead><tr><th scope="col">Colour</th><th scope="col">When (the first that matches, from the top)</th></tr></thead>
 <tbody>
-<tr><td>red</td><td>No heartbeat file, or it does not parse, or <code>v</code> is unknown; or now is later than due + interval + grace (two beats missed); or <code>state</code> is <code>stopped</code>; or usage is 95% or more while sessions are working (the account will stop mid-work).</td></tr>
-<tr><td>grey</td><td><code>state</code> is <code>paused</code> and the beat is not two beats late: paused on purpose, no alert.</td></tr>
-<tr><td>amber</td><td>Now is later than due + grace (one beat missed); or usage is 85% or more; or <code>state</code> is <code>blocked</code>; or <code>resets_at</code> is earlier than <code>at</code> (the usage figure is stale); or <code>at</code> is more than 10 minutes in the future (a clock is wrong).</td></tr>
+<tr><td>red</td><td>The file cannot be read or parsed, or <code>v</code> is unknown; or no file at all for a home marked required; or now is later than due + interval + grace (two beats missed); or <code>state</code> is <code>stopped</code>; or room is <code>rejected</code> or in overage while sessions are working (the account stops mid-work).</td></tr>
+<tr><td>grey</td><td>No file yet for a home not yet marked required ("no heartbeat yet", during roll-out); or <code>state</code> is <code>paused</code> and the beat is not two beats late (paused on purpose). No alert.</td></tr>
+<tr><td>amber</td><td>Now is later than due + grace (one beat missed); or room is <code>allowed_warning</code>; or <code>rejected</code> or overage while idle; or room unknown; or <code>state</code> is <code>blocked</code>; or <code>resets_at</code> is earlier than <code>at</code> (stale); or <code>at</code> is more than 10 minutes in the future (a clock is wrong).</td></tr>
 <tr><td>green</td><td>Otherwise.</td></tr>
 </tbody>
 </table></div>
@@ -101,13 +102,26 @@ footer{margin-top:3rem;font-size:.85rem;color:var(--muted)}
 <h2>4. Alerts</h2>
 <p>A red account is raised to Dinis. For now: at each wake I read every home's heartbeat and write one line per red account under <code>"Dinis:"</code> in my agent.json (account, why, since when), and remove it when the account is no longer red. Later: the same line goes as a needs-you item to his Chat space through a.drive's relay.</p>
 
-<h2>5. Still to settle</h2>
+<h2>5. The code</h2>
 <ul>
-<li>The exact list of home repositories, and that they are public (the page reads them from raw.githubusercontent.com).</li>
-<li>Whether a maestro can read its own account's <code>rate_limit_info</code> at every beat. If not, <code>room</code> is <code>null</code>, the room factor counts as &times;1, and the row is amber for "usage unknown".</li>
-<li>UK business hours as Monday to Friday 08:00 to 19:00 is my reading of "business hours"; Dinis may want other hours.</li>
+<li><a href="../heartbeat/heartbeat.mjs">heartbeat/heartbeat.mjs</a>: the rule (<code>interval</code>), the check (<code>judge</code>), the alert lines (<code>dinisLines</code>) and the view (<code>render</code>, <code>mount</code>). One file, no dependencies, runs in a browser and in Node. The six homes are in <code>HOMES</code>; set a home's <code>required</code> to true once its maestro beats, so a missing file then turns red.</li>
+<li><a href="../heartbeat/test.mjs">heartbeat/test.mjs</a>: the worked examples above, every colour, British Summer Time, and the alert lines (<code>node heartbeat/test.mjs</code>).</li>
+<li><a href="../heartbeat/run.mjs">heartbeat/run.mjs</a>: my wake check; prints each home's colour and the <code>"Dinis:"</code> lines.</li>
 </ul>
-<footer>a.devops@SovereignWebsite.dinis. A draft for a.maestro and Dinis; code follows once the format and the rule are agreed.</footer>
+<p>To put the view on /accounts/: copy <code>heartbeat.mjs</code> to <code>site/accounts/heartbeat.mjs</code> and add, where the table should go:</p>
+<pre><code>&lt;div id="heartbeats"&gt;Reading the heartbeats...&lt;/div&gt;
+&lt;script type="module"&gt;
+import { mount } from './heartbeat.mjs';
+mount(document.getElementById('heartbeats'));
+&lt;/script&gt;</code></pre>
+<p>It reads each home from raw.githubusercontent.com (cached there for up to 5 minutes, well inside the 30 minute minimum) and refreshes every 5 minutes. If the page ever gets a Content-Security-Policy, its <code>connect-src</code> must allow <code>https://raw.githubusercontent.com</code>.</p>
+
+<h2>6. Still to settle</h2>
+<ul>
+<li>UK business hours as Monday to Friday 08:00 to 19:00: a.maestro has asked Dinis.</li>
+<li>Router homes join later, with the same file.</li>
+</ul>
+<footer>a.devops@SovereignWebsite.dinis. Draft 2: format, rule, check and view.</footer>
 </main>
 </body>
 </html>
