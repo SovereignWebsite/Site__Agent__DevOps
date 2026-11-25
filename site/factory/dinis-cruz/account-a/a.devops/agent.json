@@ -25,7 +25,7 @@
     {
       "n": 1,
       "what": "Certificates: Let's Encrypt limit on sovereignweb.site and the five sites on http",
-      "state": "finding updated 03:20Z with a.factory's correction: the limit is the likely cause; nudge one at a time, beware the 06:17Z sweep",
+      "state": "answered a.maestro 12:30Z: customer sites first (findings/2026-11-25__customer-sites-first.html)",
       "page": "findings/2026-11-25__certificates.html"
     },
     {
@@ -46,10 +46,10 @@
   ],
   "waiting_on": [
     {
-      "what": "decision on holding new sites, nudging one at a time, and a plan-only Org apply input",
-      "who": "Dinis (put to him by a.factory)",
-      "since": "2026-11-25T03:07Z"
+      "what": "Dinis: merge plan-only (IaC 737cd3a); one scoped nudge for Site__Artist__Lee-Elle-Horowitz; the two IaC changes (cname only once DNS answers; one nudge per run in a chosen order)",
+      "who": "Dinis via a.maestro, maestro.b, b.factory",
+      "since": "2026-11-25T12:30Z"
     }
   ],
-  "updated": "2026-11-25T03:20Z"
+  "updated": "2026-11-25T12:30Z"
 }
