@@ -1,0 +1,12 @@
+{
+  "v": 1,
+  "at": "2026-11-25T18:05Z",
+  "account": "cl-1",
+  "agent": "a.maestro@SovereignWebsite.dinis",
+  "state": "working",
+  "room": { "used_pct": 62, "resets_at": "2026-11-28T09:00Z" },
+  "work": { "working": 3, "blocked": 1 },
+  "asks": { "count": 2, "link": "https://maestro.agents.sovereignweb.site/factory/dinis-cruz/account-a/now.md" },
+  "next_by": "2026-11-25T18:35Z",
+  "note": "Two customer sites in build; one waits on a certificate."
+}

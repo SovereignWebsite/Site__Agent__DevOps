@@ -42,6 +42,12 @@
       "n": 4,
       "what": "Append Lanes v2 (SG/Send): DevOps opinion on S3 lifecycle rules and bucket CORS, link to a.maestro",
       "state": "open"
+    },
+    {
+      "n": 5,
+      "what": "Accounts heartbeat: format, rule, check, view, alerts (a.maestro relay at Dinis's word, 25 Nov)",
+      "state": "format and rule drafted, sent to a.maestro 18:00Z; code after agreement",
+      "page": "findings/2026-11-25__accounts-heartbeat.html"
     }
   ],
   "waiting_on": [
@@ -51,5 +57,6 @@
       "since": "2026-11-25T12:30Z"
     }
   ],
-  "updated": "2026-11-25T12:30Z"
+  "updated": "2026-11-25T18:00Z",
+  "Dinis:": []
 }
